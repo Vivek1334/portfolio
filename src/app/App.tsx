@@ -529,7 +529,7 @@ export default function App() {
               {([
                 { icon: <Github size={18} />, href: "https://github.com/Vivek1334", label: "GitHub" },
                 { icon: <Linkedin size={18} />, href: "https://www.linkedin.com/in/vivek1334/", label: "LinkedIn" },
-                { icon: <Twitter size={18} />, href: "#", label: "Twitter" },
+                { icon: <Twitter size={18} />, href: "https://x.com/Vivek13VO", label: "Twitter" },
               ]).map(({ icon, href, label }) => (
                 <a
                   key={label}
@@ -1007,7 +1007,7 @@ export default function App() {
               {([
                 { Icon: Github, href: "https://github.com/Vivek1334", label: "GitHub" },
                 { Icon: Linkedin, href: "https://www.linkedin.com/in/vivek1334/", label: "LinkedIn" },
-                { Icon: Twitter, href: "#", label: "Twitter" },
+                { Icon: Twitter, href: "https://x.com/Vivek13VO", label: "Twitter" },
               ]).map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -1036,7 +1036,7 @@ export default function App() {
               links: [
                 { name: "GitHub", href: "https://github.com/Vivek1334", external: true },
                 { name: "LinkedIn", href: "https://www.linkedin.com/in/vivek1334/", external: true },
-                { name: "Twitter", href: "#", external: false },
+                { name: "Twitter", href: "https://x.com/Vivek13VO", external: true },
                 { name: "Email", href: "mailto:vivek130304@gmail.com", external: false },
               ],
             },
