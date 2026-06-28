@@ -626,7 +626,7 @@ export default function App() {
                 className="text-xs uppercase tracking-widest text-muted-foreground mb-4 block"
                 style={{ fontFamily: "'JetBrains Mono', monospace" }}
               >
-                Work
+                Portfolio
               </span>
               <h2
                 className="leading-tight"
@@ -1029,14 +1029,6 @@ export default function App() {
                 { name: "Projects", href: "#projects", action: () => scrollTo("Projects") },
                 { name: "Skills", href: "#skills", action: () => scrollTo("Skills") },
                 { name: "Contact", href: "#contact", action: () => scrollTo("Contact") },
-              ],
-            },
-            {
-              heading: "Work",
-              links: [
-                { name: "Lattice Financial", href: "#projects", action: () => scrollTo("Projects") },
-                { name: "Forma Health", href: "#projects", action: () => scrollTo("Projects") },
-                { name: "Stitch Labs", href: "#projects", action: () => scrollTo("Projects") },
               ],
             },
             {
