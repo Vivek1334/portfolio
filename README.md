@@ -3,6 +3,8 @@
 
 This repository hosts the source code for my personal portfolio website, showcasing my software engineering projects, technical skills, and experience.
 
+**Live Link**: [https://portfolio-vivek.onrender.com](https://portfolio-vivek.onrender.com) *(Update this placeholder with your actual live Render URL after deploying)*
+
 ## Terms of Use & License
 
 © 2026 Vivek Odugoudar. All rights reserved.
