@@ -578,7 +578,7 @@ export default function App() {
             <div className="grid grid-cols-3 gap-4">
               {([
                 { num: "B.E.", label: "Computer Science" },
-                { num: "10+", label: "Projects built" },
+                { num: "1", label: "Project built" },
                 { num: "100%", label: "Fast learner" },
               ]).map(({ num, label }) => (
                 <div key={label} className="p-4 rounded-2xl" style={{ background: "#f4f4f4" }}>
