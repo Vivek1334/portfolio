@@ -471,7 +471,7 @@ export default function App() {
               Bengaluru,India· Available now
             </div>
 
-            <h1 className="leading-[0.9] tracking-tight mb-6 font-extrabold text-[clamp(2.8rem,7vw,5.5rem)]">
+            <h1 className="leading-[1.05] tracking-tight mb-6 font-extrabold text-[clamp(2.8rem,7vw,5.5rem)]">
               <DancingText text="Myself" />
               <br />
               <span
