@@ -32,26 +32,6 @@ public final class PortfolioServer {
         {
           "projects": [
             {
-              "title": "ExpenseTracker",
-              "category": "Backend",
-              "year": "2026",
-              "desc": "Interactive financial logger with visual statistics. Features a Spring Boot REST API, H2 database storage, and a React dashboard showing monthly category breakdowns.",
-              "stack": ["Java 21", "Spring Boot", "React", "H2 Database", "Recharts"],
-              "accent": "#7b61ff",
-              "shape": "circle",
-              "url": "https://github.com/Vivek1334/expense-tracker"
-            },
-            {
-              "title": "KanbanBoard",
-              "category": "Frontend",
-              "year": "2026",
-              "desc": "A collaborative Kanban workspace for task management. Backed by a Spring Boot CRUD API with in-memory H2 database persistence and interactive status cards.",
-              "stack": ["Java 21", "Spring Boot", "React", "H2 Database", "TailwindCSS"],
-              "accent": "#00c9a7",
-              "shape": "grid",
-              "url": "https://github.com/Vivek1334/kanban-board"
-            },
-            {
               "title": "Form-Craft",
               "category": "Frontend",
               "year": "2025",
