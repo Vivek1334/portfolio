@@ -3,7 +3,7 @@
 
 This repository hosts the source code for my personal portfolio website, showcasing my software engineering projects, technical skills, and experience.
 
-**Live Link**: [[https://portfolio-vivek.onrender.com](https://portfolio-1-y22r.onrender.com/) ]
+**Live Link**: [https://portfolio-1-y22r.onrender.com](https://portfolio-1-y22r.onrender.com/)
 
 ## Terms of Use & License
 
