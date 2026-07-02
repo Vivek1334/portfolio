@@ -39,7 +39,8 @@ public final class PortfolioServer {
               "stack": ["React", "JavaScript", "HTML5", "CSS3"],
               "accent": "#d4ff00",
               "shape": "lines",
-              "url": "https://survey-builder-ll65.onrender.com"
+              "url": "https://survey-builder-ll65.onrender.com",
+              "image": "/form-craft.jpg"
             }
           ],
           "skills": [

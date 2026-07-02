@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Github, Linkedin, Twitter, ArrowUpRight, Send, Coffee, Leaf, Code2, Database, Network, Flame, GitBranch, Box } from "lucide-react";
+import { Github, Linkedin, Twitter, ArrowUpRight, Send, Coffee, Leaf, Code2, Database, Network, Flame, GitBranch, Box, FileText } from "lucide-react";
 
 /* ─── types ─── */
 type Tab = "All" | "Backend" | "Frontend" | "DevOps";
@@ -13,6 +13,7 @@ type Project = {
   accent: string;
   shape: Shape;
   url?: string;
+  image?: string;
 };
 type Skill = {
   name: string;
@@ -36,6 +37,7 @@ const DEFAULT_PROJECTS: Project[] = [
     accent: "#d4ff00",
     shape: "lines",
     url: "https://survey-builder-ll65.onrender.com",
+    image: "/form-craft.jpg",
   },
 ];
 
@@ -496,12 +498,14 @@ export default function App() {
               >
                 See My Work <ArrowUpRight size={14} />
               </button>
-              <button
-                onClick={() => scrollTo("Contact")}
-                className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm border-2 border-foreground transition-all duration-200 hover:bg-foreground hover:text-background"
+              <a
+                href="/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-sm transition-all duration-200 hover:scale-105 border border-border hover:bg-muted text-foreground"
               >
-                Hire Me
-              </button>
+                Download Resume <FileText size={14} />
+              </a>
             </div>
 
             {/* social strip */}
@@ -661,19 +665,29 @@ export default function App() {
                       style={{ background: project.accent }}
                     />
                   )}
-                  <div className="absolute inset-0">
-                    <ProjectShape shape={project.shape} color={project.accent} />
-                  </div>
-                  {/* big initial */}
-                  <span
-                    className="relative z-10 text-6xl font-extrabold opacity-20 select-none"
-                    style={{
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
-                      color: project.accent === "#0a0a0a" ? "#fff" : project.accent,
-                    }}
-                  >
-                    {project.title[0]}
-                  </span>
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  ) : (
+                    <>
+                      <div className="absolute inset-0">
+                        <ProjectShape shape={project.shape} color={project.accent} />
+                      </div>
+                      {/* big initial */}
+                      <span
+                        className="relative z-10 text-6xl font-extrabold opacity-20 select-none"
+                        style={{
+                          fontFamily: "'Bricolage Grotesque', sans-serif",
+                          color: project.accent === "#0a0a0a" ? "#fff" : project.accent,
+                        }}
+                      >
+                        {project.title[0]}
+                      </span>
+                    </>
+                  )}
                   {/* category pill */}
                   <span
                     className="absolute top-3 left-3 text-xs px-2 py-1 rounded-full font-medium"
