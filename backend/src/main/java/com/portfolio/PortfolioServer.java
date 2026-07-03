@@ -63,6 +63,7 @@ public final class PortfolioServer {
         HttpServer server = HttpServer.create(new InetSocketAddress(PORT), 0);
         server.createContext("/api/portfolio", PortfolioServer::handlePortfolio);
         server.createContext("/api/contact", PortfolioServer::handleContact);
+        server.createContext("/api/test-smtp", PortfolioServer::handleTestSmtp);
         server.createContext("/", PortfolioServer::handleStatic);
         server.setExecutor(null);
         server.start();
@@ -108,6 +109,36 @@ public final class PortfolioServer {
 
         boolean emailSent = sendContactEmail(body);
         sendJson(exchange, 201, "{\"status\":\"received\",\"emailSent\":" + emailSent + "}");
+    }
+
+    private static void handleTestSmtp(HttpExchange exchange) throws IOException {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            sendJson(exchange, 405, "{\"error\":\"Method not allowed\"}");
+            return;
+        }
+
+        String host = System.getenv("SMTP_HOST");
+        String username = System.getenv("SMTP_USERNAME");
+        String password = System.getenv("SMTP_PASSWORD");
+        String to = System.getenv().getOrDefault("CONTACT_TO_EMAIL", "vivek130304@gmail.com");
+
+        if (isBlank(host) || isBlank(username) || isBlank(password) || isBlank(to)) {
+            sendJson(exchange, 400, "{\"status\":\"error\",\"message\":\"SMTP configuration is missing. Make sure SMTP_HOST, SMTP_USERNAME, and SMTP_PASSWORD are set.\"}");
+            return;
+        }
+
+        int port = Integer.parseInt(System.getenv().getOrDefault("SMTP_PORT", "465"));
+        String from = System.getenv().getOrDefault("SMTP_FROM_EMAIL", username);
+        String body = "Diagnostic test message from your deployed portfolio site.";
+
+        try {
+            sendSmtpEmail(host, port, username, password, from, to, body);
+            sendJson(exchange, 200, "{\"status\":\"success\",\"message\":\"SMTP connection and email sending succeeded!\"}");
+        } catch (Exception exception) {
+            String errorMsg = exception.getMessage();
+            if (errorMsg == null) errorMsg = exception.toString();
+            sendJson(exchange, 500, "{\"status\":\"error\",\"message\":\"" + errorMsg.replace("\"", "\\\"").replace("\n", " ").replace("\r", "") + "\",\"type\":\"" + exception.getClass().getName() + "\"}");
+        }
     }
 
     private static boolean sendContactEmail(String body) {
