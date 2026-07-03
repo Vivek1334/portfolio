@@ -21,9 +21,11 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 public final class PortfolioServer {
-    private static final int PORT = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+    private static final int PORT = Integer.parseInt(getEnv("PORT", "8080"));
     private static final Path ROOT = Path.of("").toAbsolutePath();
     private static final Path DIST_DIR = ROOT.resolve("dist").normalize();
     private static final Path MESSAGES_FILE = ROOT.resolve("backend").resolve("data").resolve("messages.jsonl");
@@ -118,10 +120,27 @@ public final class PortfolioServer {
             return;
         }
 
+        Set<String> keys = new HashSet<>(System.getenv().keySet());
+        for (Path path : new Path[]{Path.of(".env"), Path.of("backend", ".env")}) {
+            if (Files.exists(path)) {
+                try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        line = line.trim();
+                        if (line.isEmpty() || line.startsWith("#")) continue;
+                        int idx = line.indexOf('=');
+                        if (idx > 0) {
+                            keys.add(line.substring(0, idx).trim());
+                        }
+                    }
+                } catch (IOException ignored) {}
+            }
+        }
+
         StringBuilder sb = new StringBuilder();
         sb.append("{");
         boolean first = true;
-        for (String key : System.getenv().keySet()) {
+        for (String key : keys) {
             if (!first) sb.append(",");
             sb.append("\"").append(key).append("\":\"present\"");
             first = false;
@@ -136,18 +155,18 @@ public final class PortfolioServer {
             return;
         }
 
-        String host = System.getenv("SMTP_HOST");
-        String username = System.getenv("SMTP_USERNAME");
-        String password = System.getenv("SMTP_PASSWORD");
-        String to = System.getenv().getOrDefault("CONTACT_TO_EMAIL", "vivek130304@gmail.com");
+        String host = getEnv("SMTP_HOST");
+        String username = getEnv("SMTP_USERNAME");
+        String password = getEnv("SMTP_PASSWORD");
+        String to = getEnv("CONTACT_TO_EMAIL", "vivek130304@gmail.com");
 
         if (isBlank(host) || isBlank(username) || isBlank(password) || isBlank(to)) {
             sendJson(exchange, 400, "{\"status\":\"error\",\"message\":\"SMTP configuration is missing. Make sure SMTP_HOST, SMTP_USERNAME, and SMTP_PASSWORD are set.\"}");
             return;
         }
 
-        int port = Integer.parseInt(System.getenv().getOrDefault("SMTP_PORT", "465"));
-        String from = System.getenv().getOrDefault("SMTP_FROM_EMAIL", username);
+        int port = Integer.parseInt(getEnv("SMTP_PORT", "465"));
+        String from = getEnv("SMTP_FROM_EMAIL", username);
         String body = "Diagnostic test message from your deployed portfolio site.";
 
         try {
@@ -161,18 +180,18 @@ public final class PortfolioServer {
     }
 
     private static boolean sendContactEmail(String body) {
-        String host = System.getenv("SMTP_HOST");
-        String username = System.getenv("SMTP_USERNAME");
-        String password = System.getenv("SMTP_PASSWORD");
-        String to = System.getenv().getOrDefault("CONTACT_TO_EMAIL", "vivek130304@gmail.com");
+        String host = getEnv("SMTP_HOST");
+        String username = getEnv("SMTP_USERNAME");
+        String password = getEnv("SMTP_PASSWORD");
+        String to = getEnv("CONTACT_TO_EMAIL", "vivek130304@gmail.com");
 
         if (isBlank(host) || isBlank(username) || isBlank(password) || isBlank(to)) {
             System.out.println("Contact message saved locally. SMTP is not configured, so no email was sent.");
             return false;
         }
 
-        int port = Integer.parseInt(System.getenv().getOrDefault("SMTP_PORT", "465"));
-        String from = System.getenv().getOrDefault("SMTP_FROM_EMAIL", username);
+        int port = Integer.parseInt(getEnv("SMTP_PORT", "465"));
+        String from = getEnv("SMTP_FROM_EMAIL", username);
 
         try {
             sendSmtpEmail(host, port, username, password, from, to, body);
@@ -337,5 +356,46 @@ public final class PortfolioServer {
             .replace("\"", "\\\"")
             .replace("\n", "\\n")
             .replace("\r", "\\r");
+    }
+
+    private static String getEnv(String key) {
+        String val = System.getenv(key);
+        if (val == null || val.isBlank()) {
+            val = getDotEnvValue(key);
+        }
+        return val;
+    }
+
+    private static String getEnv(String key, String defaultValue) {
+        String val = getEnv(key);
+        return (val == null || val.isBlank()) ? defaultValue : val;
+    }
+
+    private static String getDotEnvValue(String key) {
+        for (Path path : new Path[]{Path.of(".env"), Path.of("backend", ".env")}) {
+            if (Files.exists(path)) {
+                try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        line = line.trim();
+                        if (line.isEmpty() || line.startsWith("#")) continue;
+                        int idx = line.indexOf('=');
+                        if (idx > 0) {
+                            String k = line.substring(0, idx).trim();
+                            String v = line.substring(idx + 1).trim();
+                            if (v.startsWith("\"") && v.endsWith("\"") && v.length() >= 2) {
+                                v = v.substring(1, v.length() - 1);
+                            } else if (v.startsWith("'") && v.endsWith("'") && v.length() >= 2) {
+                                v = v.substring(1, v.length() - 1);
+                            }
+                            if (k.equals(key)) {
+                                return v;
+                            }
+                        }
+                    }
+                } catch (IOException ignored) {}
+            }
+        }
+        return null;
     }
 }
