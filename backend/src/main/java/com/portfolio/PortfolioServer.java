@@ -64,6 +64,7 @@ public final class PortfolioServer {
         server.createContext("/api/portfolio", PortfolioServer::handlePortfolio);
         server.createContext("/api/contact", PortfolioServer::handleContact);
         server.createContext("/api/test-smtp", PortfolioServer::handleTestSmtp);
+        server.createContext("/api/env-debug", PortfolioServer::handleEnvDebug);
         server.createContext("/", PortfolioServer::handleStatic);
         server.setExecutor(null);
         server.start();
@@ -109,6 +110,24 @@ public final class PortfolioServer {
 
         boolean emailSent = sendContactEmail(body);
         sendJson(exchange, 201, "{\"status\":\"received\",\"emailSent\":" + emailSent + "}");
+    }
+
+    private static void handleEnvDebug(HttpExchange exchange) throws IOException {
+        if (!"GET".equalsIgnoreCase(exchange.getRequestMethod())) {
+            sendJson(exchange, 405, "{\"error\":\"Method not allowed\"}");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        boolean first = true;
+        for (String key : System.getenv().keySet()) {
+            if (!first) sb.append(",");
+            sb.append("\"").append(key).append("\":\"present\"");
+            first = false;
+        }
+        sb.append("}");
+        sendJson(exchange, 200, sb.toString());
     }
 
     private static void handleTestSmtp(HttpExchange exchange) throws IOException {
