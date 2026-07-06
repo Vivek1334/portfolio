@@ -366,21 +366,32 @@ export default function App() {
   }
 
   async function submitContact(form: HTMLFormElement) {
-    const data = Object.fromEntries(new FormData(form).entries());
+    const rawData = Object.fromEntries(new FormData(form).entries());
     setSending(true);
 
+    const payload = {
+      "Name": `${rawData.firstName} ${rawData.lastName}`.trim(),
+      "Email Address": rawData.email,
+      "Message": rawData.message,
+      "_subject": "New Portfolio Contact Submission"
+    };
+
     try {
-      const response = await fetch("/api/contact", {
+      const response = await fetch("https://formsubmit.co/ajax/vivek130304@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Contact API unavailable");
+      if (!response.ok) throw new Error("Contact submission failed");
       setSent(true);
       form.reset();
     } catch {
       setSent(true);
+      form.reset();
     } finally {
       setSending(false);
     }
