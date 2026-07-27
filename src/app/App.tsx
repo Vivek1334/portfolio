@@ -36,7 +36,7 @@ const DEFAULT_PROJECTS: Project[] = [
     stack: ["React", "JavaScript", "HTML5", "CSS3"],
     accent: "#d4ff00",
     shape: "lines",
-    url: "https://survey-builder-ll65.onrender.com",
+    url: "https://form-craft-52n3.onrender.com",
     image: "/form-craft.jpg",
   },
 ];
