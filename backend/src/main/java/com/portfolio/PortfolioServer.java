@@ -34,6 +34,17 @@ public final class PortfolioServer {
         {
           "projects": [
             {
+              "title": "MargaDarshi",
+              "category": "Frontend",
+              "year": "2026",
+              "desc": "An intelligent travel exploration platform featuring real-time meteorological telemetry, authentic landmark verification, audio phrasebooks, and day-by-day expedition planning powered by Google Gemini AI.",
+              "stack": ["JavaScript", "HTML5", "Tailwind CSS", "Leaflet", "Google Gemini API", "Open-Meteo"],
+              "accent": "#10b981",
+              "shape": "circle",
+              "url": "https://vivek1334.github.io/Margadarshi/",
+              "image": "/margadarshi.jpg"
+            },
+            {
               "title": "Form-Craft",
               "category": "Frontend",
               "year": "2025",
